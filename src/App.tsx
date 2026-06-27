@@ -9,7 +9,11 @@ import PomodoroTimer from './components/PomodoroTimer'
 type NewTodoData = Omit<Todo, 'id' | 'is_completed' | 'created_at'>
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([])
+  // 새로고침 시 즉시 복원: localStorage → Supabase 순으로 로드
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    const cached = localStorage.getItem('todos')
+    return cached ? (JSON.parse(cached) as Todo[]) : []
+  })
   // 현재 화면: 'main' = 메인, 'pomodoro' = 타이머
   const [view, setView] = useState<'main' | 'pomodoro'>('main')
   // 현재 타이머에서 집중 중인 Todo
@@ -27,6 +31,11 @@ function App() {
   useEffect(() => {
     fetchTodos()
   }, [])
+
+  // todos 변경 시마다 localStorage에 저장 (새로고침 대비)
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   // 폼 '시작' 버튼 → Supabase에 새 Todo 생성 후 타이머 화면으로 전환
   const handleStart = async (formData: NewTodoData) => {
