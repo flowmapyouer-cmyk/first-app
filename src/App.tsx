@@ -78,12 +78,10 @@ function App() {
     }
   }
 
-  // Todo 삭제
+  // Todo 삭제: 로컬 상태 먼저 제거 후 Supabase 동기화
   const handleDelete = async (id: string) => {
-    const { error } = await supabase.from('todos').delete().eq('id', id)
-    if (!error) {
-      setTodos(prev => prev.filter(t => t.id !== id))
-    }
+    setTodos(prev => prev.filter(t => t.id !== id))
+    await supabase.from('todos').delete().eq('id', id)
   }
 
   // Todo 수정 (인라인 편집)
