@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(claude mcp *)",
+      "PowerShell(claude mcp add supabase --transport http https://mcp.supabase.com)",
+      "PowerShell(Get-Command claude -ErrorAction SilentlyContinue; where.exe claude 2>$null; \\(Get-ChildItem \"$env:LOCALAPPDATA\\\\Claude\" -ErrorAction SilentlyContinue\\); \\(Get-ChildItem \"$env:APPDATA\\\\Claude\" -ErrorAction SilentlyContinue\\))",
+      "mcp__supabase__list_projects"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
